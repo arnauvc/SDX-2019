@@ -4,8 +4,8 @@
 \usepackage{url}
 
 %opening
-\title{Seminar Report: [seminar ID] (e.g. Chatty)}
-\author{\textbf{Name of team members}}
+\title{Seminar Report: [Chatty]}
+\author{\textbf{Arnau Valls, Aniol Gamiz, Nil Magnusson}}
 \date{\normalsize\today{}}
 
 \begin{document}
@@ -20,9 +20,16 @@
 	A compressed file (.tar.gz) containing all your source code files must be submitted together with this report\footnote{Describe in the report any design decision required to understand your code (if any)}.
 \end{center}
 
+
+
 \section{Introduction}
 
-\textit{Introduce in a couple of sentences the seminar and the main topic related to distributed systems it covers.}
+\begin{itemize}
+
+
+\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents.}
+
+\end{itemize}
 
 \section{Experiments}
 
@@ -30,10 +37,25 @@
 
 \section{Open questions}
 
-\textit{Try to answer all the open questions in the documentation. When possible, do experiments to support your answers.}
+\begin{itemize}
+
+
+
+\item{\textbf{1 Server Open Questions:}\\
+\textbf{i) }No, perquè amb més usuaris, el servidor haura de repartir els missatges a més usuaris i per tant trigara més temps en repartir els missatges de cada usuari.\\
+\textbf{ii)} Si el server falla tot el xat cau i els clients no es podran enviar missatges.\\
+\textbf{iii)\\} 
+\textbf{iv)} No, perquè la latencia entre els diferents clients i el servidor pot ser diferents i els missatges poden arribar en ordre diferent.\\
+\textbf{v)} Sí, una altra vegada aquest fet pot apareixer per culpa de la latencia entre els clients i el servidor.\\
+\textbf{vi)} Si el client abandona el xat mentre el servidor fa el broadcast si que rebrà el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
+\\
+\textbf{2 Servers Open Questions:}\\}
+
+\end{itemize}
 
 \section{Personal opinion}
 
 \textit{Provide your personal opinion of the seminar, indicating whether it should be included in next year's course or not.}
+
 
 \end{document}
