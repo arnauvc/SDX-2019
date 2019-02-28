@@ -24,18 +24,17 @@
 
 \section{Introduction}
 
-\begin{itemize}
+\begin{align}
 
 
-\text{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents.}
+\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents}
 
-\end{itemize}
+\end{align}
 
 \section{Experiments}
 
 \begin{itemize}
 
-\text{}
 
 \end{itemize}
 
@@ -73,17 +72,17 @@ is broadcasting a message, will he/she receive that message?\\} Si el client aba
 
 \textbf{2 Servers Open Questions:}\\}
 \\
-\textbf{i) What happens if a server fails?\\} Els clients registrats al servidor que caigui deixaran de tenir access al xat.
+\textbf{i) What happens if a server fails?\\} Els clients registrats al servidor que caigui deixaran de tenir access al xat.\\
 \\
 \textbf{ii) Do your answers
-to previous questions iii, iv, and v still hold in this implementation?\\} Sí, 
+to previous questions iii, iv, and v still hold in this implementation?\\} Sí, perquè a efectes pràctics tenir fins a 2 servers representa el mateix que tenir un ja que si tenim 3 nodes, 2 d'ells estaran al mateix servidor per tant rebran els mateixos missatges i en el mateix ordre. \\
 \\
 \textbf{iii) What
 might happen with the list of servers if there are concurrent requests from servers
-to join or leave the system?\\}
+to join or leave the system?\\} Els servers que hagin fet la petició a la vegada en diferents servidors no es veuran entre ells ja que al ser a la vegada els updates no arriben abans que el server join reques.t\\
 \\
 \textbf{iv) What are the advantages and disadvantages of
-this  implementation  regarding  the  previous  one?\\}
+this  implementation  regarding  the  previous  one?\\} Una avantatge obvia és que escala molt millor ja que la feina es pot repartir entre més servidors, també és més tolerant a fallades ja que si cau un servidor només es perdran els clients d'aquell servidor. Com a defecte podriem dir que és més costós d'implementar ja que s'han de controlar més missatges.\\
 \\
 
 
@@ -92,7 +91,7 @@ this  implementation  regarding  the  previous  one?\\}
 
 \section{Personal opinion}
 
-\textit{Provide your personal opinion of the seminar, indicating whether it should be included in next year's course or not.}
+\item{Creiem que és una pràctica molt interessant ja que es pot veure clarament el funcionament dels sistemes distribuits, és molt complicada així entres en les bases de'Erlang. Nosaltres la recomanariem basicament perquè creiem que són les bases bàsiques per treballar amb Erlang i els sistemes distribuits.}
 
 
 \end{document}
