@@ -63,12 +63,30 @@ to any other client in the order they were issued?\\} No, perquè la latencia en
 \\
 \textbf{v) Is it possible that a client
 receives a response to a message from another client before receiving the original
-message from a third client?\\} Sí, una altra vegada aquest fet pot apareixer per culpa de la latencia entre els clients i el servidor.\\
+message from a third client?\\} No, perquè tots els missatges passen per un servidor per tant tots els clients veuran els mateixos missatges a la vegada.\\
 \\
 \textbf{vi) If a user joins or leaves the chat while the server
 is broadcasting a message, will he/she receive that message?\\} Si el client abandona el xat mentre el servidor fa el broadcast si que rebrà el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
 \\
+
+\newpage
+
 \textbf{2 Servers Open Questions:}\\}
+\\
+\textbf{i) What happens if a server fails?\\} Els clients registrats al servidor que caigui deixaran de tenir access al xat.
+\\
+\textbf{ii) Do your answers
+to previous questions iii, iv, and v still hold in this implementation?\\} Sí, 
+\\
+\textbf{iii) What
+might happen with the list of servers if there are concurrent requests from servers
+to join or leave the system?\\}
+\\
+\textbf{iv) What are the advantages and disadvantages of
+this  implementation  regarding  the  previous  one?\\}
+\\
+
+
 
 \end{itemize}
 
