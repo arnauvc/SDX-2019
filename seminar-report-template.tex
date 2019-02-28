@@ -27,13 +27,19 @@
 \begin{itemize}
 
 
-\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents.}
+\text{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents.}
 
 \end{itemize}
 
 \section{Experiments}
 
-\textit{Provide evidence of the experiments you did (e.g., use screenshots) and discuss the results you got. In addition, you may provide figures or tables with experimental results of the system evaluation. For each seminar, we will provide you with some guidance on which kind of evaluation you should do.}
+\begin{itemize}
+
+\text{}
+
+\end{itemize}
+
+\newpage
 
 \section{Open questions}
 
@@ -41,13 +47,26 @@
 
 
 
-\item{\textbf{1 Server Open Questions:}\\
-\textbf{i) }No, perquè amb més usuaris, el servidor haura de repartir els missatges a més usuaris i per tant trigara més temps en repartir els missatges de cada usuari.\\
-\textbf{ii)} Si el server falla tot el xat cau i els clients no es podran enviar missatges.\\
-\textbf{iii)\\} 
-\textbf{iv)} No, perquè la latencia entre els diferents clients i el servidor pot ser diferents i els missatges poden arribar en ordre diferent.\\
-\textbf{v)} Sí, una altra vegada aquest fet pot apareixer per culpa de la latencia entre els clients i el servidor.\\
-\textbf{vi)} Si el client abandona el xat mentre el servidor fa el broadcast si que rebrà el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
+\textbf{1 Server Open Questions:}\\
+\\
+\textbf{i) Does  this  solution  scale  when  the  number  of  users
+increase?\\}No, perquè amb més usuaris, el servidor haura de repartir els missatges a més usuaris i per tant trigara més temps en repartir els missatges de cada usuari.\\
+\\
+\textbf{ii) What happens if the server fails?\\} Si el server falla tot el xat cau i els clients no es podran enviar missatges.\\
+\\
+\textbf{iii) Are  the  messages  from  a
+single client guaranteed to be delivered to any other client in the order they were
+issued? \\} Sí, el middleware garenteix l'ordenació FIFO entre missatges.\\ 
+\\
+\textbf{iv) Are the messages sent concurrently by several clients guaranteed to be delivered
+to any other client in the order they were issued?\\} No, perquè la latencia entre els diferents clients i el servidor pot ser diferents i els missatges poden arribar en ordre diferent.\\
+\\
+\textbf{v) Is it possible that a client
+receives a response to a message from another client before receiving the original
+message from a third client?\\} Sí, una altra vegada aquest fet pot apareixer per culpa de la latencia entre els clients i el servidor.\\
+\\
+\textbf{vi) If a user joins or leaves the chat while the server
+is broadcasting a message, will he/she receive that message?\\} Si el client abandona el xat mentre el servidor fa el broadcast si que rebrà el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
 \\
 \textbf{2 Servers Open Questions:}\\}
 
