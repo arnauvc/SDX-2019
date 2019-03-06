@@ -57,23 +57,23 @@ El tercer experiment consistia en 2 servidors i 2 clients en una mateixa m\`aqui
 \textbf{1 Server Open Questions:}\\
 \\
 \textbf{i) Does  this  solution  scale  when  the  number  of  users
-increase?\\}No, perquè amb més usuaris, el servidor haura de repartir els missatges a més usuaris i per tant trigara més temps en repartir els missatges de cada usuari.\\
+increase?\\}No, perqu\`e amb m\'es usuaris, el servidor haura de repartir els missatges a m\'es usuaris i per tant trigara m\'es temps en repartir els missatges de cada usuari.\\
 \\
 \textbf{ii) What happens if the server fails?\\} Si el server falla tot el xat cau i els clients no es podran enviar missatges.\\
 \\
 \textbf{iii) Are  the  messages  from  a
 single client guaranteed to be delivered to any other client in the order they were
-issued? \\} Sí, el middleware garenteix l'ordenació FIFO entre missatges.\\ 
+issued? \\} Si, el middleware garenteix l'ordenaci\'o  FIFO entre missatges.\\ 
 \\
 \textbf{iv) Are the messages sent concurrently by several clients guaranteed to be delivered
-to any other client in the order they were issued?\\} No, perquè la latencia entre els diferents clients i el servidor pot ser diferents i els missatges poden arribar en ordre diferent.\\
+to any other client in the order they were issued?\\} No, perqu\`e la latencia entre els diferents clients i el servidor pot ser diferents i els missatges poden arribar en ordre diferent.\\
 \\
 \textbf{v) Is it possible that a client
 receives a response to a message from another client before receiving the original
-message from a third client?\\} No, perquè tots els missatges passen per un servidor per tant tots els clients veuran els mateixos missatges a la vegada.\\
+message from a third client?\\} No, perqu\`e tots els missatges passen per un servidor per tant tots els clients veuran els mateixos missatges a la vegada.\\
 \\
 \textbf{vi) If a user joins or leaves the chat while the server
-is broadcasting a message, will he/she receive that message?\\} Si el client abandona el xat mentre el servidor fa el broadcast si que rebrà el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
+is broadcasting a message, will he/she receive that message?\\} Si el client abandona el xat mentre el servidor fa el broadcast si que rebr\`a el missatge ja que encara esta a la llista de clients, en canvi si s'afegeix al xat mentre el servidor fa el broadcast no rebrà el missatge ja que encara no esta a la  llista de clients.\\
 \\
 
 \newpage
@@ -83,14 +83,14 @@ is broadcasting a message, will he/she receive that message?\\} Si el client aba
 \textbf{i) What happens if a server fails?\\} Els clients registrats al servidor que caigui deixaran de tenir access al xat.\\
 \\
 \textbf{ii) Do your answers
-to previous questions iii, iv, and v still hold in this implementation?\\} Sí, perquè a efectes pràctics tenir fins a 2 servers representa el mateix que tenir un ja que si tenim 3 nodes, 2 d'ells estaran al mateix servidor per tant rebran els mateixos missatges i en el mateix ordre. \\
+to previous questions iii, iv, and v still hold in this implementation?\\} Si, perqu\`e a efectes pr\`actics tenir fins a 2 servers representa el mateix que tenir un ja que si tenim 3 nodes, 2 d'ells estaran al mateix servidor per tant rebran els mateixos missatges i en el mateix ordre. \\
 \\
 \textbf{iii) What
 might happen with the list of servers if there are concurrent requests from servers
-to join or leave the system?\\} Els servers que hagin fet la petició a la vegada en diferents servidors no es veuran entre ells ja que al ser a la vegada els updates no arriben abans que el server join reques.t\\
+to join or leave the system?\\} Els servers que hagin fet la petici\'o a la vegada en diferents servidors no es veuran entre ells ja que al ser a la vegada els updates no arriben abans que el server join request.\\
 \\
 \textbf{iv) What are the advantages and disadvantages of
-this  implementation  regarding  the  previous  one?\\} Una avantatge obvia és que escala molt millor ja que la feina es pot repartir entre més servidors, també és més tolerant a fallades ja que si cau un servidor només es perdran els clients d'aquell servidor. Com a defecte podriem dir que és més costós d'implementar ja que s'han de controlar més missatges.\\
+this  implementation  regarding  the  previous  one?\\} Una avantatge obvia \'es que escala molt millor ja que la feina es pot repartir entre m\'es servidors, tamb\'e \'es m\'es tolerant a fallades ja que si cau un servidor només es perdran els clients d'aquell servidor. Com a defecte podriem dir que \'es m\'es costós d'implementar ja que s'han de controlar m\'es missatges.\\
 \\
 
 
@@ -99,7 +99,7 @@ this  implementation  regarding  the  previous  one?\\} Una avantatge obvia és 
 
 \section{Personal opinion}
 
-\item{Creiem que \´es una pr\`actica molt interessant ja que es pot veure clarament el funcionament dels sistemes distribuits, és molt complicada així entres en les bases de'Erlang. Nosaltres la recomanariem basicament perquè creiem que són les bases bàsiques per treballar amb Erlang i els sistemes distribuits.}
+\item{Creiem que \´es una pr\`actica molt interessant ja que es pot veure clarament el funcionament dels sistemes distribuits, és molt complicada aix\'i entres en les bases de'Erlang. Nosaltres la recomanariem basicament perqu\`e creiem que són les bases bàsiques per treballar amb Erlang i els sistemes distribuits.}
 
 
 \end{document}
