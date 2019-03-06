@@ -27,7 +27,7 @@
 \begin{align}
 
 
-\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a través d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents}
+\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents usuaris es puguin comunicar a trav\´es d'un xat. En aquest cas el sistema distribuit consisteix en tenir el servidor principal i els clients, tots en el mateix xat, en maquines o instancies de Erlang diferents}
 
 \end{align}
 
@@ -36,13 +36,13 @@
 \begin{itemize}
 
 \textbf{LocalClient - Server - LocalClient}\\
-El primer experiment que vam fer va ser el d'executar en una mateixa màquina 2 Clients locals i 1 servidor. Primerament carreguem el servidor amb nom \textit{server\_node}, compilem i l'engeguem. Llavors carreguem els 2 clients en la mateixa màquina del servidor amb noms \textit{client\_node} i \textit{client\_node2} i els engeguem dient a quin servidor i IP s'han de connectar.\\\\
+El primer experiment que vam fer va ser el d'executar en una mateixa m\`aquina 2 Clients locals i 1 servidor. Primerament carreguem el servidor amb nom \textit{server\_node}, compilem i l'engeguem. Llavors carreguem els 2 clients en la mateixa m\`aquina del servidor amb noms \textit{client\_node} i \textit{client\_node2} i els engeguem dient a quin servidor i IP s'han de connectar.\\\\
 
 \textbf{LocalClient - Server - RemoteClient}\\
-El segon experiment que vam realitzar va ser el d'executar en una mateixa màquina 1 Client local i 1 servidor i en una màquina remota 1 Client. El servidor l'executem amb nom \textit{server\_node} i els clients amb nom i amb paràmetres \textit{-kernel inet\_dist\_listen\_min 1025 -kernel inet\_dist\_listen\_max 2000} per especificar els ports que podem fer servir en runtime per comunicar processos de màquines remotes. Els clients els executem amb nom \textit{client\_node} i \textit{client\_node2} i ja podem fer \textit{join} al servidor . Els 2 clients reben l'actualització quan es connecta algú altre i l'intercanvi de missatges funciona.\\\\\\\\\\\\
+El segon experiment que vam realitzar va ser el d'executar en una mateixa màquina 1 Client local i 1 servidor i en una m \`aquina remota 1 Client. El servidor l'executem amb nom \textit{server\_node} i els clients amb nom i amb par\`ametres \textit{-kernel inet\_dist\_listen\_min 1025 -kernel inet\_dist\_listen\_max 2000} per especificar els ports que podem fer servir en runtime per comunicar processos de m\`aquines remotes. Els clients els executem amb nom \textit{client\_node} i \textit{client\_node2} i ja podem fer \textit{join} al servidor . Els 2 clients reben l'actualitzaci\'o quan es connecta alg\'u altre i l'intercanvi de missatges funciona.\\\\\\\\\\\\
 
 \textbf{LocalClient - Server - Server - LocalClient}\\
-El tercer experiment consistia en 2 servidors i 2 clients en una mateixa màquina. La funcionalitat de l'experiment consistia en connectar els dos servidors un amb l'altre i els dos clients connectats 1 a cada servidor. Un cop connectats els servidors podem enviar missatges d'un client a l'altre sense problemes. El flux dels missatges es \textit{client\_node} \rightarrow \textit{server1} \rightarrow \textit{server2} \rightarrow \textit{client\_node} i viceversa.\\
+El tercer experiment consistia en 2 servidors i 2 clients en una mateixa m\`aquina. La funcionalitat de l'experiment consistia en connectar els dos servidors un amb l'altre i els dos clients connectats 1 a cada servidor. Un cop connectats els servidors podem enviar missatges d'un client a l'altre sense problemes. El flux dels missatges es \textit{client\_node} \rightarrow \textit{server1} \rightarrow \textit{server2} \rightarrow \textit{client\_node} i viceversa.\\
 
 \end{itemize}
 
@@ -99,7 +99,7 @@ this  implementation  regarding  the  previous  one?\\} Una avantatge obvia és 
 
 \section{Personal opinion}
 
-\item{Creiem que és una pràctica molt interessant ja que es pot veure clarament el funcionament dels sistemes distribuits, és molt complicada així entres en les bases de'Erlang. Nosaltres la recomanariem basicament perquè creiem que són les bases bàsiques per treballar amb Erlang i els sistemes distribuits.}
+\item{Creiem que \´es una pr\`actica molt interessant ja que es pot veure clarament el funcionament dels sistemes distribuits, és molt complicada així entres en les bases de'Erlang. Nosaltres la recomanariem basicament perquè creiem que són les bases bàsiques per treballar amb Erlang i els sistemes distribuits.}
 
 
 \end{document}
