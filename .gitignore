@@ -1,0 +1,2 @@
+#Ignora fitxers "compilats" d'erlang
+*.beam
