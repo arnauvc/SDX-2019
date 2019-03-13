@@ -1,0 +1,79 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc} % Change according your file encoding
+\usepackage{graphicx}
+\usepackage{url}
+
+%opening
+\title{Seminar Report: [Muty]}
+\author{\textbf{Arnau Valls, Aniol Gamiz, Nil Magnusson}}
+\date{\normalsize\today{}}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+  Upload your report in PDF format.
+  
+  Use this LaTeX template to format the report.
+  
+	A compressed file (.tar.gz) containing all your source code files must be submitted together with this report\footnote{Describe in the report any design decision required to understand your code (if any)}.
+\end{center}
+
+
+
+\section{Introduction}
+
+\begin{align}
+
+
+\item{Aquest laboratori consisteix en crear un sistema distribuit en el qual diferents processos inten accedir a una regió critica i ho fan amb exclusió mutua. Realitzem 3 versions, la primera consisteix en que cada procés intenta accedir i només envia "ok" a un altra proces que vulgui accedir quan ell mateix surti de la zona d'exlcusió, la segona es donen prioritat als processos amb el que un procés que vuglui accedir si li arriba una petició d'un procés més prioritati li haurà de donar el "ok" i per últim una versió en la que es té en compte el temps en el qu el procés ha fet la petició.}
+
+\end{align}
+
+\section{Experiments}
+
+\begin{itemize}
+
+
+\end{itemize}
+
+\newpage
+
+\section{Open questions}
+
+\begin{itemize}
+
+
+
+\textbf{Versió 1:}\\
+\\
+\textbf{i)What is the behavior of this lock when you increase
+the risk of a conflict?\\}
+
+\\
+\textbf{Resolving Deadlock:}\\}
+\\
+\textbf{i) Justify how your code guarantees that only one
+process is in the critical section at any time.\\}\\
+\\
+\textbf{ii)  What is the main drawback
+of lock2 implementation?\\}\\ 
+\\
+
+\textbf{Lamport’s time:}\\}
+\\
+\textbf{i)  Would it be possible that a worker is given
+access to a critical section prior to another worker that issued a request to its lock instance logically before (assuming happened-before order)?\\}\\
+\\
+
+
+
+\end{itemize}
+
+\section{Personal opinion}
+
+\item{}
+
+
+\end{document}
