@@ -8,14 +8,15 @@ start(Lock, Sleep, Work) ->
     spawn('node2@127.0.0.1', fun() -> register(l2, apply(Lock, start, [2]))end),
     spawn('node3@127.0.0.1', fun() -> register(l3, apply(Lock, start, [3]))end),
     spawn('node4@127.0.0.1', fun() -> register(l4, apply(Lock, start, [4]))end),
-    {l1,'node1@127.0.0.1'} ! {peers, [l2, l3, l4]},
-    {l2,'node2@127.0.0.1'} ! {peers, [l1, l3, l4]},
-    {l3,'node3@127.0.0.1'} ! {peers, [l1, l2, l4]},
-    {l4,'node4@127.0.0.1'} ! {peers, [l1, l2, l3]},
-    spawn('node1@127.0.0.1', fun() -> register(w1, worker:start("John", l1, Sleep, Work))end),
-    spawn('node2@127.0.0.1', fun() -> register(w2, worker:start("Ringo", l2, Sleep, Work))end),    
-    spawn('node3@127.0.0.1', fun() -> register(w3, worker:start("Paul", l3, Sleep, Work))end),
-    spawn('node4@127.0.0.1', fun() -> register(w4, worker:start("George", l4, Sleep, Work))end),
+	timer:sleep(1000),
+    {l1,'node1@127.0.0.1'} ! {peers, [{l2,'node2@127.0.0.1'}, {l3,'node3@127.0.0.1'}, {l4,'node4@127.0.0.1'}]},
+    {l2,'node2@127.0.0.1'} ! {peers, [{l1,'node1@127.0.0.1'}, {l3,'node3@127.0.0.1'}, {l4,'node4@127.0.0.1'}]},
+    {l3,'node3@127.0.0.1'} ! {peers, [{l1,'node1@127.0.0.1'}, {l2,'node2@127.0.0.1'}, {l4,'node4@127.0.0.1'}]},
+    {l4,'node4@127.0.0.1'} ! {peers, [{l1,'node1@127.0.0.1'}, {l2,'node2@127.0.0.1'}, {l3,'node3@127.0.0.1'}]},
+    spawn('node1@127.0.0.1', fun() -> register(w1, worker:start("John", {l1,'node1@127.0.0.1'}, Sleep, Work))end),
+    spawn('node2@127.0.0.1', fun() -> register(w2, worker:start("Ringo", {l2,'node2@127.0.0.1'}, Sleep, Work))end),    
+    spawn('node3@127.0.0.1', fun() -> register(w3, worker:start("Paul", {l3,'node3@127.0.0.1'}, Sleep, Work))end),
+    spawn('node4@127.0.0.1', fun() -> register(w4, worker:start("George", {l4,'node4@127.0.0.1'}, Sleep, Work))end),
     ok.
 
 stop() ->
