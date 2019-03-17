@@ -32,6 +32,19 @@
 \end{align}
 
 \section{Experiments}
+\begin{itemize}
+\textbf{i) Provant amb diferents paràmetres de \textit{Sleep} i \textit{Work}}\\
+El primer experiment que vam realitzar va ser canviar aquests dos paràmatres abans d'executar el programa. Quan canviem el paràmetre \textit{Sleep} ens quedem adormits més/menys estona abans d'intentar agafar el Lock i quan canviem el paràmetre \textit{Work} ens estem més estona en la zona crítica "treballant" un cop l'agafem.
+\\
+\\
+\textbf{ii) Cada parella \textit{Worker-Lock} en una instància Erlang diferent}\\
+El segon experiment realitzat ha sigut el de fer que cada parella \textit{Worker-Lock} s'executi en una instància pròpia d'Erlang. Aquests canvis els hem fet en el codi del \textit{muty.erl}. Concretament, cada vegada que necessitem fer un \textit{register}, haurem de fer \textit{spawn} en cada una de les instàncies Erlang que haurem d'haver creat i en cada una d'elles fem que s'executi amb \textit{fun} la funció que vulguem. També necessitem canviar totes les referències a les instàncies, degut a que ara s'executaran en instàncies Erlang diferents i per tant no ens podem referir a elles com fins ara. Cada vegada que tinguem \textit{lx} haurem de fer-ho amb una tupla de l'estil de \textit{\{lx, 'nodex@127.0.0.1'\}}. 
+\\
+\textbf{iii) Resolving deadlock}\\
+El tercer experiment realitzat consisteix en intentar eliminar les deadlock. Per gestionar aquesta situació donarem a cada instància de \textit{lock} un identificador i el passarem per paràmetre en cada funció. Amb això aconseguirem que puguem donar una prioritat a cada instància de \textit{lock}, llavors podem enviar un OK quan una instància de \textit{lock} ens faci un \textit{request} i tingui prioritat superior.\\
+Per resoldre la situació conflictiva de quan un procés ja ha confirmat un altre procés amb prioritat menor que el que ho demana ara hem fet servir la solució proposada: enviar un missatge adicional de \textit{request} un cop enviat l'OK.
+
+\end{itemize}
 
 \begin{itemize}
 
