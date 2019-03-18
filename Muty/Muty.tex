@@ -5,7 +5,7 @@
 
 %opening
 \title{Seminar Report: [Muty]}
-\author{\textbf{Arnau Valls, Aniol Gamiz, Nil Magnusson}}
+\author{\textbf{Arnau Valls, Aniol Gàmiz, Nil Magnusson}}
 \date{\normalsize\today{}}
 
 \begin{document}
@@ -33,16 +33,32 @@
 
 \section{Experiments}
 \begin{itemize}
-\textbf{i) Provant amb diferents paràmetres de \textit{Sleep} i \textit{Work}}\\
-El primer experiment que vam realitzar va ser canviar aquests dos paràmatres abans d'executar el programa. Quan canviem el paràmetre \textit{Sleep} ens quedem adormits més/menys estona abans d'intentar agafar el Lock i quan canviem el paràmetre \textit{Work} ens estem més estona en la zona crítica "treballant" un cop l'agafem.
+\textbf{1.The architecture}\\
+\textbf{i) Sleep time més petit que work time}\\
+Provarem amb uns temps de \textit{sleep} molt més petits que el temps que està a la secció crítica, concretament amb 1ms a \textit{sleep} i 2000ms a \textit{work}. El que hem observat ha sigut que la probabilitat que els workers vulguin accedir a la regió crítica és més alta degut al temps tant petit del \textit{sleep}. Això provoca una deadlock cada 8s, els workers aconseguiexen el lock i quan l'alliberen es queden tots en deadlock esperant per agafar-lo. (Foto sleeppetitworkgran)\\
+\\
+\textbf{Sleep time major que work time}
+Quan fiquem paràmetres com 10000ms de \textit{sleep} i 1ms de \textit{work} veiem que és queden la major part del temps en \textit{sleep} i que és més difícil que entrem en algun deadlock degut a que tenim accés a la zona crítica amb intervals de temps molt més separats. (Foto sleepgranworkpetit)\\
+\\
+
 \\
 \\
 \textbf{ii) Cada parella \textit{Worker-Lock} en una instància Erlang diferent}\\
 El segon experiment realitzat ha sigut el de fer que cada parella \textit{Worker-Lock} s'executi en una instància pròpia d'Erlang. Aquests canvis els hem fet en el codi del \textit{muty.erl}. Concretament, cada vegada que necessitem fer un \textit{register}, haurem de fer \textit{spawn} en cada una de les instàncies Erlang que haurem d'haver creat i en cada una d'elles fem que s'executi amb \textit{fun} la funció que vulguem. També necessitem canviar totes les referències a les instàncies, degut a que ara s'executaran en instàncies Erlang diferents i per tant no ens podem referir a elles com fins ara. Cada vegada que tinguem \textit{lx} haurem de fer-ho amb una tupla de l'estil de \textit{\{lx, 'nodex@127.0.0.1'\}}. 
 \\
-\textbf{iii) Resolving deadlock}\\
-El tercer experiment realitzat consisteix en intentar eliminar les deadlock. Per gestionar aquesta situació donarem a cada instància de \textit{lock} un identificador i el passarem per paràmetre en cada funció. Amb això aconseguirem que puguem donar una prioritat a cada instància de \textit{lock}, llavors podem enviar un OK quan una instància de \textit{lock} ens faci un \textit{request} i tingui prioritat superior.\\
-Per resoldre la situació conflictiva de quan un procés ja ha confirmat un altre procés amb prioritat menor que el que ho demana ara hem fet servir la solució proposada: enviar un missatge adicional de \textit{request} un cop enviat l'OK.
+\\
+\textbf{2.Resolving deadlock}\\
+Per gestionar aquesta situació donarem a cada instància de \textit{lock} un identificador i el passarem per paràmetre en cada funció. Amb això aconseguirem que puguem donar una prioritat a cada instància de \textit{lock}, llavors podem enviar un OK quan una instància de \textit{lock} ens faci un \textit{request} i tingui prioritat superior.\\
+Per resoldre la situació conflictiva de quan un procés ja ha confirmat un altre procés amb prioritat menor que el que ho demana ara hem fet servir la solució proposada: enviar un missatge adicional de \textit{request} un cop enviat l'OK.\\
+\\
+\textbf{ii) Sleep time més petit que work time}\\
+En aquest experiment em provat amb la segona versió del lock amb paràmetres \textit{sleep = 1ms} i \textit{work = 2000ms} i podem observar que hi ha 2 processos que sempre s'estan esperant i són els mateixos durant l'execució. Els altres 2 processos es reparteixen la zona crítica l'un amb l'altre. Això es deu a que es reparteixen la zona crítica els 2 lock amb id més petit. Quan el més petit aconsegueix la zona crítica, el 2n té totes les confirmacions dels altres locks degut a que es més prioritari, menys del que està a la zona crítica, i un cop surt d'aquesta li dona la confirmacio al 2n i aquest hi entra. El cicle es repeteix i els altres locks no aconsegueixen d'entrar-hi.\\ (foto sleeppetitworkgran.v2)
+\\
+\\
+\textbf{Sleep time més gran que work time}\\
+Quan fiquem paràmetres com 10000ms de \textit{sleep} i 1000ms de \textit{work} veiem que la major part del temps se la passen dormint degut a l'alt temps de sleep, però ara ja no tenim el problema anterior que només es repartien entre 2 l'accés a la zona crítica, sinó que se la reparteixen més equitativament entre tots els locks que la demanen. Si augmentem el paràmetre de work i l'igualem amb el de sleep continua funcionant prou bé sense que passi el fallo de l'experiment anterior. Per tant podem deduïr que el problema és quan el paràmetre sleep és més petit que el de work. (foto sleepgranworkpetit.v2)
+
+
 
 \end{itemize}
 
@@ -63,18 +79,21 @@ Per resoldre la situació conflictiva de quan un procés ja ha confirmat un altr
 \\
 \textbf{i)What is the behavior of this lock when you increase
 the risk of a conflict?\\}
+En aquesta versió del lock no podem assegurar que no hi hagi deadlocks, per assegurar que no ens quedem atrapats esperant confirmacions, quan passa un cert temps enviem un missatge de release i ens alliberem.
+\\
+\\
+\textbf{Resolving Deadlock:}\\
 
-\\
-\textbf{Resolving Deadlock:}\\}
-\\
 \textbf{i) Justify how your code guarantees that only one
-process is in the critical section at any time.\\}\\
+process is in the critical section at any time.}\\
+Per garantir que només entri 1 únic procés a la zona crítica enviarem un ok seguit d'un request al lock més prioritari de manera que el node prioritari s'executarà després.\\
 \\
 \textbf{ii)  What is the main drawback
-of lock2 implementation?\\}\\ 
+of lock2 implementation?}\\ 
+L'inconvenient més important és degut a que quan tenim un sleep time més petit que el work time es produeix el cas que hem comentat a l'experiment, que degut al sistema de prioritats només ens agafa els 2 locks més prioritaris i es van alternant la zona crítica entre els 2.
 \\
-
-\textbf{Lamport’s time:}\\}
+\\
+\textbf{Lamport’s time:}\\
 \\
 \textbf{i)  Would it be possible that a worker is given
 access to a critical section prior to another worker that issued a request to its lock instance logically before (assuming happened-before order)?\\}\\
