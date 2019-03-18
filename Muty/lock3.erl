@@ -42,12 +42,12 @@ wait(Nodes, Master, Refs, Waiting, TakeRef, MyId, Clock) ->
     receive
         {request, From, Ref, OtherId, OtherClock} ->
             if
-                OtherClock < Clock -> From ! {ok, Ref},R = make_ref(),From ! {request, self(), R, MyId, Clock}, wait(Nodes, Master, [R | Refs], Waiting, TakeRef, MyId, Clock);
+                OtherClock < Clock -> From ! {ok, Ref};
 
                 OtherClock > Clock -> wait(Nodes, Master, Refs, [{From, Ref}|Waiting], TakeRef, MyId, Clock);
 
                 OtherClock == Clock -> if
-                                           MyId > OtherId -> From ! {ok, Ref},R = make_ref(),From ! {request, self(), R, MyId, Clock}, wait(Nodes, Master, [R | Refs], Waiting, TakeRef, MyId, Clock);
+                                           MyId > OtherId -> From ! {ok, Ref};
 
                                            MyId =< OtherId -> wait(Nodes, Master, Refs, [{From, Ref}|Waiting], TakeRef, MyId, Clock)
                                        end
