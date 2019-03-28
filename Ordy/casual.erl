@@ -13,9 +13,10 @@ init(Id, Master, Jitter) ->
 server(Id, Master, Nodes, Jitter, VC, Queue) ->
     receive
         {send, Msg} ->
-            multicast(Msg, Nodes, Jitter, VC, Id),
+	    NewVC = setelement(Id, VC, element(Id, VC)+1),
+            multicast(Msg, Nodes, Jitter, NewVC, Id),
             Master ! {deliver, Msg},
-            server(Id, Master, Nodes, Jitter,VC,Queue);
+            server(Id, Master, Nodes, Jitter,NewVC,Queue);
 	{multicast, Msg, FromId, MsgVC} ->
 		case checkMsg(FromId, MsgVC, VC, size(VC)) of
 			ready ->
@@ -47,7 +48,7 @@ multicast(Msg, Nodes, Jitter, VC, Id) ->
 checkMsg(_, _, _, 0) -> ready;
 
 checkMsg(FromId, MsgVC, VC, FromId) ->
-	if ( element(FromId,MsgVC) == element(FromId,MsgVC)) ->  %% TODO: DONE
+	if ( element(FromId,MsgVC) == element(FromId,VC)+1) ->  %% TODO: DONE
 		checkMsg(FromId, MsgVC, VC, FromId-1);
 		true -> wait
 	end;
@@ -68,9 +69,9 @@ deliverReadyMsgs(Master, VC, [{FromId, MsgVC, Msg}|Rest], Queue) ->
 		ready ->
 			%% TODO: ADD SOME CODE
 			Master ! {deliver, Msg},
-			NewVC = setelement(FromId, VC, element(FromId, VC)+1),  %% TODO: DONE
+			NewerVC = setelement(FromId, VC, element(FromId, VC)+1),  %% TODO: DONE
 			NewQueue = lists:delete({FromId, MsgVC, Msg}, Queue),
-			deliverReadyMsgs(Master, NewVC, NewQueue, NewQueue);
+			deliverReadyMsgs(Master, NewerVC, NewQueue, NewQueue);
 		wait ->
 			deliverReadyMsgs(Master, VC, Rest, Queue)
 	end.

@@ -14,31 +14,33 @@ server(Master, MaxPrp, MaxAgr, Nodes, Cast, Queue, Jitter) ->
 receive
     {send, Msg} ->
         Ref = make_ref(),
-        request(... , ... , ... , ...),
-        NewCast = cast(... , ... , ...),
-        server(... , ... , ... , ... , ... , ... , ...);
+        request(Ref , Msg , Nodes , Jitter),
+        NewCast = cast(Ref , Nodes , Cast),
+        server(Master, MaxPrp, MaxAgr, Nodes, NewCast, Queue, Jitter);
     {request, From, Ref, Msg} ->
-        NewMaxPrp = ... ,
-        From ! {proposal, ... , ...},
-        NewQueue = insert(... , ... , ... , ...),
-        server(... , ... , ... , ... , ... , ... , ...);
+        NewMaxPrp = seq:increment(seq:maxfirst(MaxPrp,MaxAgr)),
+        From ! {proposal, Ref, NewMaxPrp},
+        NewQueue = insert(Ref, Msg, NewMaxPrp, Queue),
+        server(Master , NewMaxPrp, MaxAgr, Nodes, Cast, NewQueue, Jitter);
     {proposal, Ref, Proposal} ->
-        case proposal(... , ... , ...) of
+        case proposal(Ref, Proposal, Cast) of
             {agreed, MaxSeq, NewCast} ->
-                agree(... , ... , ...),
-                server(... , ... , ... , ... , ... , ... , ...);
+                agree(Ref, MaxSeq, Nodes),
+		server(Master, MaxPrp, MaxAgr, Nodes, Cast, Queue, Jitter);
             NewCast ->
-                server(... , ... , ... , ... , ... , ... , ...)
+		server(Master, MaxPrp, MaxAgr, Nodes, NewCast, Queue, Jitter)
         end;
     {agreed, Ref, Seq} ->
-        NewQueue = update(... , ... , ...),
-        {AgrMsg, NewerQueue} = agreed(...),
-        deliver(... , ...),
-        NewMaxAgr = ... ,
-        server(... , ... , ... , ... , ... , ... , ...);
+        NewQueue = update(Ref , Seq, Queue),
+        {AgrMsg, NewerQueue} = agreed(NewQueue),
+        deliver(Master, AgrMsg),
+        NewMaxAgr = seq:maxfirst(Seq,MaxAgr) ,
+        server(Master, MaxPrp, NewMaxAgr, Nodes, Cast, NewQueue, Jitter);
     stop ->
         ok
 end.
+
+%%COMPLETAR
 
 %% Sending a request message to all nodes
 request(Ref, Msg, Nodes, 0) ->
@@ -61,6 +63,8 @@ agree(Ref, Seq, Nodes)->
                       %% TODO: ADD SOME CODE
                   end, 
                   Nodes).
+
+%%COMPLETAR
 
 %% Delivering messages to the master
 deliver(Master, Messages) ->
