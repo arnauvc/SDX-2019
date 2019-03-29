@@ -26,7 +26,7 @@ receive
         case proposal(Ref, Proposal, Cast) of
             {agreed, MaxSeq, NewCast} ->
                 agree(Ref, MaxSeq, Nodes),
-		server(Master, MaxPrp, MaxAgr, Nodes, Cast, Queue, Jitter);
+		server(Master, MaxPrp, MaxAgr, Nodes, NewCast, Queue, Jitter);
             NewCast ->
 		server(Master, MaxPrp, MaxAgr, Nodes, NewCast, Queue, Jitter)
         end;
@@ -35,25 +35,26 @@ receive
         {AgrMsg, NewerQueue} = agreed(NewQueue),
         deliver(Master, AgrMsg),
         NewMaxAgr = seq:maxfirst(Seq,MaxAgr) ,
-        server(Master, MaxPrp, NewMaxAgr, Nodes, Cast, NewQueue, Jitter);
+        server(Master, MaxPrp, NewMaxAgr, Nodes, Cast, NewerQueue, Jitter);
     stop ->
         ok
 end.
 
-%%COMPLETAR
+%%COMPLETAR -> DONE
 
 %% Sending a request message to all nodes
 request(Ref, Msg, Nodes, 0) ->
     Self = self(),
     lists:foreach(fun(Node) -> 
-                      %% TODO: ADD SOME CODE
+                      %% TODO: DONE
+                  Node ! {request, Self, Ref, Msg}
                   end, 
                   Nodes);
 request(Ref, Msg, Nodes, Jitter) ->
     Self = self(),
     lists:foreach(fun(Node) ->
                       T = rand:uniform(Jitter),
-                      timer:send_after(T, Node, ... ) %% TODO: COMPLETE
+                      timer:send_after(T, Node, {request, Self, Ref, Msg}) %% TODO: DONE
                   end,
                   Nodes).
         
@@ -61,10 +62,11 @@ request(Ref, Msg, Nodes, Jitter) ->
 agree(Ref, Seq, Nodes)->
     lists:foreach(fun(Pid)-> 
                       %% TODO: ADD SOME CODE
+                  Pid ! {agreed, Ref, Seq}
                   end, 
                   Nodes).
 
-%%COMPLETAR
+%%COMPLETAR -> DONE
 
 %% Delivering messages to the master
 deliver(Master, Messages) ->
