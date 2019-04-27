@@ -32,14 +32,14 @@ init(Name, Grp, Master) ->
 leader(Name, Master, Slaves, N) ->
   receive
     {mcast, Msg} ->
-      bcast(Name, {msg, Msg, N}, Slaves),  %% TODO: COMPLETED
+      bcast(Name, {msg, Msg, N}, Slaves, Master),  %% TODO: COMPLETED
       %% TODO: ADD SOME CODE
       Master ! {deliver, Msg},
       NewN = N + 1,
       leader(Name, Master, Slaves, NewN);
     {join, Peer} ->
       NewSlaves = lists:append(Slaves, [Peer]),
-      bcast(Name, {view, self(), NewSlaves, N}, NewSlaves),  %% TODO: COMPLETED
+      bcast(Name, {view, self(), NewSlaves, N}, NewSlaves, Master),  %% TODO: COMPLETED
       NewN = N + 1,
       leader(Name, Master, NewSlaves, NewN);  %% TODO: COMPLETED
     stop ->
@@ -48,16 +48,17 @@ leader(Name, Master, Slaves, N) ->
       io:format("leader ~s: strange message ~w~n", [Name, Error])
   end.
 
-bcast(Name, Msg, Nodes) ->
+bcast(Name, Msg, Nodes, Master) ->
   lists:foreach(fun(Node) ->
     Node ! Msg,
-    crash(Name, Msg)
+    crash(Name, Msg, Master, Nodes)
                 end,
     Nodes).
-crash(Name, Msg) ->
+crash(Name, Msg, Master, [Leader | _]) ->
   case rand:uniform(?arghh) of
     ?arghh ->
       io:format("leader ~s CRASHED: msg ~w~n", [Name, Msg]),
+      Master ! {die, Leader},
       exit(no_luck);
     _ ->
       ok
@@ -107,9 +108,9 @@ election(Name, Master, Slaves, N, Last) ->
   case Slaves of
     [Self|Rest] ->
       %% TODO: ADD SOME CODE: DONE
-      bcast(Name, Last, Rest),
+      bcast(Name, Last, Rest, Master),
       MidN = N + 1,
-      bcast(Name, {view, Self, Rest, MidN}, Rest),
+      bcast(Name, {view, Self, Rest, MidN}, Rest, Master),
       NewN = MidN + 1,
       leader(Name, Master, Rest, NewN); %% TODO: COMPLETED
     [NewLeader|Rest] ->
