@@ -10,7 +10,7 @@ start(Name, Module, Sleep) ->
 init(Name, Module, Sleep) ->
     Cast = apply(Module, start, [Name]),
     Color = ?color,
-    init_cont(Name, Cast, Color, Sleep, Module).
+    init_cont(Name, Cast, Color, Sleep).
 
 start(Name, Module, Peer, Sleep) ->
     spawn(fun() -> init(Name, Module, Peer, Sleep) end).
@@ -23,7 +23,7 @@ init(Name, Module, Peer, Sleep) ->
             Cast ! {mcast, {state_req, Ref}},
             Color = state_transfer(Cast, Ref),
             if Color /= stop ->
-                 init_cont(Name, Cast, Color, Sleep, Module),
+                 init_cont(Name, Cast, Color, Sleep),
                  Cast ! stop;
                true ->
                  Cast ! stop
@@ -50,43 +50,39 @@ state_transfer(Cast, Ref) ->
             state_transfer(Cast, Ref)
     end.
 
-init_cont(Name, Cast, Color, Sleep, Module) ->
+init_cont(Name, Cast, Color, Sleep) ->
     Gui = gui:start(Name, self()),
     Gui ! {color, Color}, 
     Wait = if Sleep == 0 -> 0; true -> rand:uniform(Sleep) end,
     timer:send_after(Wait, cast_change),
-    worker(Name, Cast, Color, Gui, Sleep, Module),
+    worker(Name, Cast, Color, Gui, Sleep),
     Gui ! stop.
 
-worker(Name, Cast, Color, Gui, Sleep, Module) ->
+worker(Name, Cast, Color, Gui, Sleep) ->
     receive
-        {die, Leader} ->
-            io:format("HELLO DIES"),
-            NewCast = apply(Module, start, [Name, Leader]),
-            worker(Name, NewCast, Color, Gui, Sleep, Module);
         {deliver, {change_state, N}} ->
             NewColor = change_color(N, Color),
             Gui ! {color, NewColor},
-            worker(Name, Cast, NewColor, Gui, Sleep, Module);
+            worker(Name, Cast, NewColor, Gui, Sleep);
         {deliver, {state_req, Ref}} ->
             Cast ! {mcast, {set_state, Ref, Color}},
-            worker(Name, Cast, Color, Gui, Sleep, Module);
+            worker(Name, Cast, Color, Gui, Sleep);
         {deliver, {set_state, _, _}} ->
-            worker(Name, Cast, Color, Gui, Sleep, Module);
+            worker(Name, Cast, Color, Gui, Sleep);
         {join, Peer} ->
             Cast ! {join, Peer},
-            worker(Name, Cast, Color, Gui, Sleep, Module);
+            worker(Name, Cast, Color, Gui, Sleep);
         cast_change ->
             Cast !  {mcast, {change_state, rand:uniform(?change)}},
             Wait = if Sleep == 0 -> 0; true -> rand:uniform(Sleep) end,
             timer:send_after(Wait, cast_change),
-            worker(Name, Cast, Color, Gui, Sleep, Module);
+            worker(Name, Cast, Color, Gui, Sleep);
         stop ->
             Cast ! stop,
             ok;
         Error ->
             io:format("worker ~s: strange message: ~w~n", [Name, Error]),
-            worker(Name, Cast, Color, Gui, Sleep, Module)
+            worker(Name, Cast, Color, Gui, Sleep)
     end.
 
 change_color(N, {R,G,B}) ->
