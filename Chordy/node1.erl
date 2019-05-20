@@ -1,15 +1,15 @@
 -module(node1).
--export([start/1, start/2]).
+-export([start/2, start/3]).
 
 -define(Stabilize, 1000).
 -define(Timeout, 5000).
 
-start(MyKey) ->
-    start(MyKey, nil).
+start(Name, MyKey) ->
+    start(Name, MyKey, nil).
 
-start(MyKey, PeerPid) ->
+start(Name, MyKey, PeerPid) ->
     timer:start(),
-    spawn(fun() -> init(MyKey, PeerPid) end).
+    register(Name, spawn(fun() -> init(MyKey, PeerPid) end)).
 
 init(MyKey, PeerPid) ->
     Predecessor = nil,
